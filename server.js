@@ -5,8 +5,95 @@ var path = require('path');
 var app = express();
 app.use(morgan('combined'));
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'index.html'));
+var articleOne = {
+  title: 'Article one',
+  heading: 'Article one',
+  date: 'Sep 9, 2016',
+  content: `<p>
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.
+  </p>
+  <p>
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.
+  </p>
+  <p>
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.This is the content of article one.
+    This is the content of article one.
+  </p>`
+};
+
+var articleTwo = {
+  title: 'Article two',
+  heading: 'Article two',
+  date: 'Sep 9, 2016',
+  content: `<p>
+      This is the content of article two.
+    </p>
+  `
+};
+
+var articleThree = {
+  title: 'Article three',
+  heading: 'Article three',
+  date: 'Sep 9, 2016',
+  content: `<p>
+      This is the content of article three.
+    </p>
+  `
+};
+
+var articles = {
+  'article-one': articleOne,
+  'article-two': articleTwo,
+  'article-three': articleThree
+};
+
+function createTemplate(data) {
+  var title = data.title;
+  var heading = data.heading;
+  var date = data.date;
+  var content = data.content;
+  var htmltemplate = `<!DOCTYPE html>
+  <html lang="en" dir="ltr">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width;initial-scale=1">
+      <title>${title}</title>
+      <link rel="stylesheet" href="/ui/style.css">
+    </head>
+    <body>
+      <div class="container">
+        <div>
+          <a href="/">Home</a>
+        </div>
+        <hr>
+        <h3>${heading}</h3>
+        <div>
+          ${date}
+        </div>
+        <div>
+          ${content}
+        </div>
+      </div>
+    </body>
+  </html>
+  `;
+  return htmltemplate
+}
+
+app.get('/:articleName', function (req, res) {
+  var articleName = req.params.articleName;
+  res.send(createTemplate(articles[articleName]));
 });
 
 app.get('/ui/style.css', function (req, res) {
