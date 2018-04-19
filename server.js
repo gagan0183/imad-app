@@ -106,6 +106,13 @@ app.get('/article/:articleName', function (req, res) {
   res.send(createTemplate(articles[articleName]));
 });
 
+var ar = [];
+app.get('/submit-btn/:name', function(req, res) {
+  var name = req.params.name;
+  ar.push(req.params.name);
+  res.send(JSON.stringify(ar));
+});
+
 app.get('/ui/style.css', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'style.css'));
 });
